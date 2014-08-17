@@ -14,16 +14,14 @@ import scripts.sbf.action.Action;
 import scripts.sbf.skill.SkillGlobals;
 
 public class Tan extends Action {
-	@Override
-	public void execute() {
-		print("Tanning");
-		RSNPC[] tanner = NPCs.find("Ellis","Sbott");
-		if (tanner.length < 1)
-			return;
-		if (tanner[0] == null)
-			return;
-		if (!DynamicClicking.clickRSNPC(tanner[0], "Trade"))
-			return;
+
+	private boolean findTanner() {
+		RSNPC[] tanner = NPCs.find("Ellis", "Sbott");
+		return tanner.length < 1 && tanner[0] != null
+				&& DynamicClicking.clickRSNPC(tanner[0], "Trade");
+	}
+
+	private boolean tanAll() {
 		if (!Timing.waitCondition(new Condition() {
 
 			@Override
@@ -32,23 +30,27 @@ public class Tan extends Action {
 				return Interfaces.get(skillManager.getMasterIndex()) != null;
 			}
 		}, General.random(5000, 6000)))
-			return;
+			return false;
 		RSInterface productInterface = Interfaces.get(
 				skillManager.getMasterIndex(), skillManager.getChildIndex());
-		if (productInterface == null)
-			return;
-		if (!productInterface.click("Tan All"))
-			return;
-		if (!Timing.waitCondition(new Condition() {
+		return productInterface != null && !productInterface.click("Tan All");
+	}
 
-			@Override
-			public boolean active() {
-				General.sleep(10, 20);
-				return Interfaces.get(skillManager.getMasterIndex()) == null;
-			}
+	@Override
+	public void execute() {
+		print("Tanning");
 
-		}, General.random(2000, 3000)))
-			return;
+		if (findTanner() && tanAll())
+			if (!Timing.waitCondition(new Condition() {
+
+				@Override
+				public boolean active() {
+					General.sleep(10, 20);
+					return Interfaces.get(skillManager.getMasterIndex()) == null;
+				}
+
+			}, General.random(2000, 3000)))
+				return;
 		SkillGlobals.ARRIVED_AT_DEPOSITORY.setStatus(false);
 
 	}
