@@ -17,7 +17,7 @@ public class Tan extends Action {
 
 	private boolean findTanner() {
 		RSNPC[] tanner = NPCs.find("Ellis", "Sbott");
-		return tanner.length < 1 && tanner[0] != null
+		return tanner.length > 0 && tanner[0] != null
 				&& DynamicClicking.clickRSNPC(tanner[0], "Trade");
 	}
 
