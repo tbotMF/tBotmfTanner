@@ -12,9 +12,7 @@ import scripts.sbf.action.Action;
 public class Withdraw extends Action {
 	private final String[] resources = skillManager.getInventoryResources();
 
-	@Override
-	public void execute() {
-		print("Withdrawing");
+	private void withdrawCoins() {
 		if (Inventory.find("Coins").length < 1) {
 			for (int i = 0; i < 50; i++) {
 				if (Banking.find("Coins").length > 0)
@@ -27,7 +25,7 @@ public class Withdraw extends Action {
 								return Inventory.find("Coins").length > 0;
 							}
 
-						}, General.random(3000, 3500)))
+						}, General.random(3000, 35000)))
 							i = 50;
 					}
 				if (i == 49) {
@@ -39,7 +37,9 @@ public class Withdraw extends Action {
 				}
 			}
 		}
+	}
 
+	private void withdrawHides() {
 		if (Inventory.find(resources).length < 1) {
 			for (int i = 0; i < 50; i++) {
 				if (Banking.find(resources).length > 0)
@@ -52,18 +52,25 @@ public class Withdraw extends Action {
 								return Inventory.find(resources).length > 0;
 							}
 
-						}, General.random(3000, 3500)))
+						}, General.random(3000, 35000)))
 							i = 50;
 					}
 				if (i == 49) {
-					print("Didn't find any " + resources[0].toLowerCase() + "s.");
+					print("Didn't find any " + resources[0].toLowerCase()
+							+ "s.");
 					print("Exiting script");
 					manager.loadTerminationCondition(true);
 					General.sleep(2000);
 				}
 			}
 		}
+	}
 
+	@Override
+	public void execute() {
+		print("Withdrawing");
+		withdrawCoins();
+		withdrawHides();
 	}
 
 	@Override
