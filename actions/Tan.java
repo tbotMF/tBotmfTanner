@@ -33,7 +33,7 @@ public class Tan extends Action {
 			return false;
 		RSInterface productInterface = Interfaces.get(
 				skillManager.getMasterIndex(), skillManager.getChildIndex());
-		return productInterface != null && !productInterface.click("Tan All");
+		return productInterface != null && productInterface.click("Tan All");
 	}
 
 	@Override
