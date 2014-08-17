@@ -27,7 +27,7 @@ public class Withdraw extends Action {
 								return Inventory.find("Coins").length > 0;
 							}
 
-						}, General.random(3000, 35000)))
+						}, General.random(3000, 3500)))
 							i = 50;
 					}
 				if (i == 49) {
@@ -52,7 +52,7 @@ public class Withdraw extends Action {
 								return Inventory.find(resources).length > 0;
 							}
 
-						}, General.random(3000, 35000)))
+						}, General.random(3000, 3500)))
 							i = 50;
 					}
 				if (i == 49) {
